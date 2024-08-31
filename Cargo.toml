@@ -1,16 +1,15 @@
 [package]
-name = "pbs-game"
+name = "pebbles-game"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-gstd = { git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1"}
-pebbles-game-io.path="io"
+pebbles-game-io = { path = "./io" }
+gstd = { git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1" }
 
-[build-dependencies]
-gear-wasm-builder = {git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1"}
-pebbles-game-io.path="io"
-
-[dev-dependencies]
-gtest = {git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1"}
-pebbles-game-io.path="io"
+[workspace]
+members = [
+    "io",
+    ".",
+]

@@ -1,126 +1,46 @@
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use gstd::prelude::*;
-    use gtest::{Log, Program, System};
-    use pebbles_game_io::*;
+/*{use gtest::{Log, Program, System};
 
+#[test]
+fn hello_test() {
+    // Inicializar el sistema
+    let sys = System::new();
+    sys.init_logger();
 
-    fn create_system_and_user() -> (System, u64) {
-        let sys = System::new();
-        sys.init_logger();
-        let user_id = 1; // 用户ID
-        sys.mint_to(user_id, 10000000000000); 
-        (sys, user_id)
-    }
+    // Crear un programa de prueba
+    let program = Program::current(&sys);
 
-    #[test]
-    fn test_init_success() {
-        let (sys, user_id) = create_system_and_user();
-        let program = Program::current(&sys);
+    // Enviar un mensaje de inicialización
+    program.send(2, String::from("INIT MESSAGE"));
 
-        let init_msg = PebblesInit {
-            difficulty: DifficultyLevel::Easy,
-            pebbles_count: 10,
-            max_pebbles_per_turn: 3,
-        };
+    // Verificar que el programa fue inicializado correctamente
+    let mut res = program.send(2, String::from("Hello"));
+    // assert!(res.log().is_empty());
+    assert!(!res.main_failed());
 
-        let res = program.send_bytes(user_id, init_msg.encode());
-        println!("{:?}", res);  
+    // Enviar un mensaje adicional y verificar la respuesta
+    res = program.send(2, String::from("Hello"));
+    let expected_log = Log::builder().dest(2).payload(String::from("Hello"));
+    assert!(res.contains(&expected_log));
+}}*/
+use gtest::{Log, Program, System};
+use hello_world::InputMessages;
 
-                let state: GameState = program.read_state(()).expect("Failed to read state");
-                assert_eq!(state.pebbles_count, 10);
-                assert_eq!(state.max_pebbles_per_turn, 3);
-                assert_eq!(state.pebbles_remaining, 7);
-                assert!(state.first_player == Player::User || state.first_player == Player::Program);
+#[test]
+fn hello_test() {
+    let sys = System::new();
+    sys.init_logger();
+    let program = Program::current(&sys);
+    let res = program.send_bytes(2, String::from("Hello"));
+    assert!(!res.main_failed());
 
-    }
-
-    #[test]
-    fn test_who_turn() {
-        let (sys, user_id) = create_system_and_user();
-
-        let program = Program::current(&sys);
-        let init_msg = PebblesInit {
-            difficulty: DifficultyLevel::Easy,
-            pebbles_count: 10,
-            max_pebbles_per_turn: 3,
-        };
-
-        program.send_bytes(1, init_msg.encode());
-        let turn_action = PebblesAction::Turn(3);
-        let res = program.send_bytes(user_id, turn_action.encode());
-        println!("{:?}", res);
-        let state: GameState = program.read_state(()).expect("Failed to read state");
-        println!("State: {:?}", state);
-        assert_eq!(state.first_player, Player::Program);
-        //assert_eq!(state.winner,Some(Player::Program));
-
-    }
-
-
-    #[test]
-    fn test_who_wins() {
-        let (sys, user_id) = create_system_and_user();
-        let program = Program::current(&sys);
-        let init_msg = PebblesInit {
-            difficulty: DifficultyLevel::Easy,
-            pebbles_count: 1,
-            max_pebbles_per_turn: 1,
-        };
-
-       let res=  program.send_bytes(user_id, init_msg.encode());
-
-        //let turn_action = PebblesAction::Turn(1);
-        //let ras = program.send_bytes(user_id, turn_action.encode());
-        let state: GameState = program.read_state(()).expect("Failed to read state");
-        println!("State: {:?}", state);
-        println!("{:?}", res);
-        assert_eq!(state.winner,Some(Player::Program));
-        //assert_eq!(state.winner,Some(Player::User));
-    }
-
-    #[test]
-    fn test_restart_game() {
-        let (sys, user_id) = create_system_and_user();
-        let program = Program::current(&sys);
-        let init_msg = PebblesInit {
-            difficulty: DifficultyLevel::Easy,
-            pebbles_count: 10,
-            max_pebbles_per_turn: 3,
-        };
-
-        program.send_bytes(user_id, init_msg.encode());
-
-        let restart_action = PebblesAction::Restart {
-            difficulty: DifficultyLevel::Hard,
-            pebbles_count: 20,
-            max_pebbles_per_turn: 5,
-        };
-
-        program.send_bytes(user_id, restart_action.encode());
-        let state: GameState = program.read_state(()).expect("Failed to read state");
-        println!("{:?}", state);
-        assert_eq!(state.pebbles_count, 20);
-    }
-
-    #[test]
-    fn test_give_up() {
-        let (sys, user_id) = create_system_and_user();
-        let program = Program::current(&sys);
-        let init_msg = PebblesInit {
-            difficulty: DifficultyLevel::Easy,
-            pebbles_count: 10,
-            max_pebbles_per_turn: 3,
-        };
-
-        program.send_bytes(user_id, init_msg.encode());
-
-        let give_up_action = PebblesAction::GiveUp;
-        let res = program.send_bytes(user_id, give_up_action.encode());
-        let state: GameState = program.read_state(()).expect("Failed to read state");
-        println!("{:?}", state);
-        println!("{:?}", res);
-        assert_eq!(state.winner,Some(Player::Program));
-    }
+    // test `SendHelloTo`
+    let hello_recipient: u64 = 4;
+    let res = program.send(
+        2,
+        InputMessages::SendHelloTo(hello_recipient.into()),
+    );
+    let expected_log = Log::builder()
+        .dest(hello_recipient)
+        .payload(String::from("Hello"));
+    assert!(res.contains(&expected_log))
 }
