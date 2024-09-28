@@ -5,8 +5,16 @@ edition = "2021"
 
 [dependencies]
 pebbles-game-io = { path = "./io" }
-gstd = { git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", tag = "v1.4.1" }
+gstd = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6" }
+
+[build-dependencies]
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6"  }
+pebbles-game-io.path="io"
+
+[dev-dependencies]
+gtest = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6"  }
+pebbles-game-io.path="io"
 
 [workspace]
 members = [
