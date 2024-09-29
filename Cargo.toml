@@ -17,7 +17,7 @@ gtest = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901
 pebbles-game-io.path="io"
 
 [lib]
-"crate-type" = ["rlib"]
+crate-type = ["rlib"]
 
 [workspace]
 members = [
