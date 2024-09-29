@@ -9,3 +9,6 @@ gstd = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f
 gmeta = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6" }
 parity-scale-codec = { version = "3", default-features = false }
 scale-info = { version = "2", default-features = false }
+
+[lib]
+"crate_type" = ["rlib"]
