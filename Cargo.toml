@@ -10,11 +10,11 @@ gmeta = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901
 
 [build-dependencies]
 gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6"  }
-pebbles-game-io.path="io"
+pebbles-game-io =  { path = "./io" }
 
 [dev-dependencies]
 gtest = { git = "https://github.com/gear-tech/gear.git", rev = "5f1c499f26956901f21f3892b1593910fb09def6"  }
-pebbles-game-io.path="io"
+pebbles-game-io = { path = "./io" }
 
 [lib]
 crate-type = ["rlib"]
